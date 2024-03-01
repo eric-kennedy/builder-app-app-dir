@@ -1,4 +1,4 @@
-import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk-react/edge';
+import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk-react';
 
 const pageModel = 'page';
 
