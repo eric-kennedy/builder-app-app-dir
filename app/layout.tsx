@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+// // import ivm from '../lib/isolated-vm';
+// const ivm = require('../lib/isolated-vm')
+// import { Builder } from '@builder.io/react';
+ 
+// const isolate = new ivm.Isolate({ memoryLimit: 128 });
+// const context = isolate.createContextSync();
+// Builder.setServerContext(context);
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
