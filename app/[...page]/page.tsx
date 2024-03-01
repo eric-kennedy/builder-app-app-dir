@@ -1,4 +1,6 @@
-import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk-react';
+import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk-react/bundle/browser';
+
+const BUILDER_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_BUILDER_API_KEY!;
 
 const pageModel = 'page';
 
@@ -14,7 +16,7 @@ export default async function Page(props: PageProps) {
   const content = await fetchOneEntry({
     options: props.searchParams,
     model: pageModel,
-    apiKey: process.env.NEXT_PUBLIC_BUILDER_API_KEY!,
+    apiKey: BUILDER_PUBLIC_API_KEY,
     userAttributes: {
       urlPath
     },
@@ -30,5 +32,5 @@ export default async function Page(props: PageProps) {
       </>
     );
   }
-  return <Content content={content} apiKey={process.env.NEXT_PUBLIC_BUILDER_API_KEY!} model={'page'} />;
+  return <Content content={content} apiKey={BUILDER_PUBLIC_API_KEY} model={'page'} />;
 }
