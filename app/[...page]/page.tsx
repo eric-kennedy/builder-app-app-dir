@@ -1,4 +1,4 @@
-import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk-react/bundle/browser';
+import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk-react/bundle/edge';
 
 const BUILDER_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_BUILDER_API_KEY!;
 
