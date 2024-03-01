@@ -1,8 +1,37 @@
 import Image from "next/image";
+import {v4 as uuid4} from 'uuid';
+import jwt from 'jsonwebtoken';
+
+function syntaxHighlight(json: string) {
+  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+      var cls = 'number';
+      if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+              cls = 'key';
+          } else {
+              cls = 'string';
+          }
+      } else if (/true|false/.test(match)) {
+          cls = 'boolean';
+      } else if (/null/.test(match)) {
+          cls = 'null';
+      }
+      return '<span class="' + cls + '">' + match + '</span>';
+  });
+}
 
 export default function Home() {
+  const jsonString = syntaxHighlight(JSON.stringify(process.versions, undefined, 4))
+  const uniqueID = uuid4();
+  const thing = jwt.sign({ foo: 'bar' }, 'BIGCOMMERCE_CLIENT_SECRET', { algorithm: 'HS256' });
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <h1>{uniqueID}</h1>
+      <pre
+        dangerouslySetInnerHTML={{__html: jsonString}}
+      />
+      <em>{thing}</em>
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
           Get started by editing&nbsp;
