@@ -1,34 +1,35 @@
-import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk-react/edge';
+import { builder } from '@builder.io/sdk';
+import { RenderBuilderContent } from '../../components/builder/builder';
 
+// Builder Public API Key set in .env file
+builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 const pageModel = 'page';
 
 interface PageProps {
   params: {
     page: string[];
   };
-  searchParams: Record<string, string>;
 }
 
 export default async function Page(props: PageProps) {
-  const urlPath = '/' + (props.params?.page?.join('/') || '');
-  const content = await fetchOneEntry({
-    options: props.searchParams,
-    model: pageModel,
-    apiKey: process.env.NEXT_PUBLIC_BUILDER_API_KEY!,
-    userAttributes: {
-      urlPath
-    },
-  });
+  const content = await builder
+    // Get the page content from Builder with the specified options
+    .get(pageModel, {
+      userAttributes: {
+        // Use the page path specified in the URL to fetch the content
+        urlPath: '/' + (props?.params?.page?.join('/') || '')
+      },
+      // Set prerender to false to return JSON instead of HTML
+      prerender: false,
+      enrich: true
+    })
+    // Convert the result to a promise
+    .toPromise();
 
-  const canShowContent =
-  content || isPreviewing(props.searchParams) || isEditing(props.searchParams);
-  if (!canShowContent) {
-    return (
-      <>
-        <h1>404</h1>
-        <p>Make sure you have your content published at builder.io.</p>
-      </>
-    );
-  }
-  return <Content content={content} apiKey={process.env.NEXT_PUBLIC_BUILDER_API_KEY!} model={'page'} />;
+  return (
+    <>
+      {/* Render the Builder page */}
+      <RenderBuilderContent content={content} model={pageModel} />
+    </>
+  );
 }
